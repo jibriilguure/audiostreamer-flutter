@@ -22,7 +22,9 @@ class AudioTrack {
       artist: json['artist'] ?? '',
       fileUrl: json['fileUrl'] ?? '',
       coverImageUrl: json['coverImageUrl'] ?? '',
-      uploadedAt: DateTime.parse(json['uploadedAt']),
+      uploadedAt: json['uploadedAt'] != null
+          ? DateTime.parse(json['uploadedAt'])
+          : DateTime.now(), // or handle differently
     );
   }
 

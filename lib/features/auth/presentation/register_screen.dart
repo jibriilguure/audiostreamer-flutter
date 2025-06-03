@@ -1,4 +1,3 @@
-import 'package:audio_streamer/features/auth/presentation/register_screen.dart';
 import 'package:audio_streamer/features/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,36 +5,44 @@ import '../../../core/const.dart';
 import '../../audio/presentation/screens/audio_list_screen.dart';
 import '../application/auth_controller.dart';
 
-class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends ConsumerStatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends ConsumerState<LoginScreen> {
+class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
-  void handleLogin() async {
-    final email = emailController.text.trim();
-    final password = passwordController.text.trim();
+  void handleRegister() async {
+    // final email = emailController.text.trim();
+    // final password = passwordController.text.trim();
+    // final confirmPassword = confirmPasswordController.text.trim();
 
-    if (email.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please enter both email and password")),
-      );
-      return;
-    }
+    // if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(content: Text("Please fill all fields")),
+    //   );
+    //   return;
+    // }
 
-    await ref.read(authControllerProvider.notifier).login(email, password);
+    // if (password != confirmPassword) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(content: Text("Passwords do not match")),
+    //   );
+    //   return;
+    // }
+
+    // await ref.read(authControllerProvider.notifier).register(email, password);
   }
 
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authControllerProvider);
 
-    // Correct usage of ref.listen inside build()
     ref.listen(authControllerProvider, (previous, next) {
       next.whenOrNull(
         error: (err, _) {
@@ -49,7 +56,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           if (response.token.isNotEmpty) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Login successful!")),
+                const SnackBar(content: Text("Registration successful!")),
               );
               print(response.token);
               Navigator.pushReplacement(
@@ -82,13 +89,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               ),
               const SizedBox(height: 4),
               const Text(
-                'Feel The Music',
+                'Join the Vibe',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 14, color: AppColors.hint),
               ),
               const SizedBox(height: 40),
 
-              // Email field
+              // Email
               TextFormField(
                 controller: emailController,
                 decoration: InputDecoration(
@@ -103,10 +110,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               ),
               const SizedBox(height: 16),
 
-              // Password field
+              // Password
               TextFormField(
                 controller: passwordController,
-                obscureText: false,
+                obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Password',
                   labelStyle: const TextStyle(color: AppColors.hint),
@@ -115,15 +122,31 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         const BorderSide(color: AppColors.textFieldBorder),
                     borderRadius: BorderRadius.circular(12),
                   ),
+                  suffixIcon: const Icon(Icons.lock, color: AppColors.hint),
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // Confirm password
+              TextFormField(
+                controller: confirmPasswordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Confirm Password',
+                  labelStyle: const TextStyle(color: AppColors.hint),
+                  border: OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(color: AppColors.textFieldBorder),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   suffixIcon:
-                      const Icon(Icons.visibility_off, color: AppColors.hint),
+                      const Icon(Icons.lock_outline, color: AppColors.hint),
                 ),
               ),
               const SizedBox(height: 20),
 
-              // Login button
               ElevatedButton(
-                onPressed: authState.isLoading ? null : handleLogin,
+                onPressed: authState.isLoading ? null : handleRegister,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   padding: const EdgeInsets.symmetric(vertical: 14),
@@ -132,20 +155,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 child: authState.isLoading
                     ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text('Sign in',
+                    : const Text('Register',
                         style: TextStyle(color: Colors.white)),
               ),
 
               const SizedBox(height: 30),
 
-              // Register navigation
               TextButton(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (ctx) => RegisterScreen()));
+                  Navigator.pop(context); // Back to Login
                 },
                 child: const Text(
-                  "Don't have an account? REGISTER",
+                  "Already have an account? SIGN IN",
                   style: TextStyle(color: AppColors.primary),
                 ),
               ),

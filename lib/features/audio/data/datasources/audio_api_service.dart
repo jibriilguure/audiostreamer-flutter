@@ -1,14 +1,13 @@
+import 'package:audio_streamer/core/api_endpoints.dart';
 import 'package:dio/dio.dart';
 import '../models/audio_track.dart';
 
 class AudioApiService {
   final Dio _dio = Dio();
-  final String ipAddress = "192.168.0.174"; // for local develompent
 
   Future<List<AudioTrack>> fetchTracks() async {
     try {
-      final response =
-          await _dio.get('http://$ipAddress:8080/api/v1/audiofiles');
+      final response = await _dio.get(ApiEndpoints.getTracks);
 
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data;
