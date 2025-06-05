@@ -1,5 +1,5 @@
 class ApiEndpoints {
-  static const String ipAddress = "192.168.0.174"; // for local devs
+  static const String ipAddress = "172.20.10.3"; // for local devs
   static const String baseUrl = "http://$ipAddress:8080/api/v1";
 
   // Auth

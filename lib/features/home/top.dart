@@ -1,3 +1,4 @@
+import 'package:audio_streamer/features/auth/presentation/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class TopNavWidget extends StatelessWidget {
@@ -59,7 +60,10 @@ class TopNavWidget extends StatelessWidget {
 
             // User Avatar
             GestureDetector(
-              onTap: onAvatarTap,
+              onTap: () => {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (ctx) => LoginScreen()))
+              },
               child: const CircleAvatar(
                 radius: 16,
                 backgroundColor: Colors.white30,
