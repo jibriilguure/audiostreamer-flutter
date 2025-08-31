@@ -18,4 +18,12 @@ class AuthRepositoryImpl implements AuthRepository {
 
     return response;
   }
+
+  Future<AuthResponse> register(String email, String password) async {
+    final response = await _authService.register(email, password);
+    final authResponse = AuthResponse.fromJson(response);
+
+    await _tokenStorage.saveToken(authResponse.token); // optional
+    return authResponse;
+  }
 }

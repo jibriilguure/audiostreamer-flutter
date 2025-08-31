@@ -2,7 +2,7 @@ import 'package:audio_streamer/features/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/const.dart';
-import '../../audio/presentation/screens/audio_list_screen.dart';
+
 import '../application/auth_controller.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
@@ -18,27 +18,29 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final confirmPasswordController = TextEditingController();
 
   void handleRegister() async {
-    // final email = emailController.text.trim();
-    // final password = passwordController.text.trim();
-    // final confirmPassword = confirmPasswordController.text.trim();
+    final email = emailController.text.trim();
+    final password = passwordController.text;
+    final confirmPassword = confirmPasswordController.text;
 
-    // if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     const SnackBar(content: Text("Please fill all fields")),
-    //   );
-    //   return;
-    // }
+    if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in all fields')),
+      );
+      return;
+    }
 
-    // if (password != confirmPassword) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     const SnackBar(content: Text("Passwords do not match")),
-    //   );
-    //   return;
-    // }
+    if (password != confirmPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Passwords do not match')),
+      );
+      return;
+    }
 
-    // await ref.read(authControllerProvider.notifier).register(email, password);
+    // Call register method from controller
+    await ref.read(authControllerProvider.notifier).register(email, password);
   }
 
+  bool _obscureText = true;
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authControllerProvider);
@@ -97,6 +99,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
               // Email
               TextFormField(
+                style: TextStyle(color: Colors.white),
                 controller: emailController,
                 decoration: InputDecoration(
                   labelText: 'Email or username',
@@ -112,8 +115,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
               // Password
               TextFormField(
+                style: TextStyle(color: Colors.white),
                 controller: passwordController,
-                obscureText: true,
+                obscureText: _obscureText,
                 decoration: InputDecoration(
                   labelText: 'Password',
                   labelStyle: const TextStyle(color: AppColors.hint),
@@ -122,15 +126,26 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         const BorderSide(color: AppColors.textFieldBorder),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  suffixIcon: const Icon(Icons.lock, color: AppColors.hint),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureText ? Icons.visibility_off : Icons.visibility,
+                      color: Colors.white70,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
 
               // Confirm password
               TextFormField(
+                style: TextStyle(color: Colors.white),
                 controller: confirmPasswordController,
-                obscureText: true,
+                obscureText: _obscureText,
                 decoration: InputDecoration(
                   labelText: 'Confirm Password',
                   labelStyle: const TextStyle(color: AppColors.hint),
@@ -139,8 +154,17 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         const BorderSide(color: AppColors.textFieldBorder),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  suffixIcon:
-                      const Icon(Icons.lock_outline, color: AppColors.hint),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureText ? Icons.visibility_off : Icons.visibility,
+                      color: Colors.white70,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
+                  ),
                 ),
               ),
               const SizedBox(height: 20),

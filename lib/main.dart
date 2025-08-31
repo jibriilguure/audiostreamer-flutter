@@ -2,6 +2,8 @@ import 'package:audio_streamer/features/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'features/home/bottom_nav.dart';
+
 void main() {
   runApp(ProviderScope(child: const MyApp()));
 }
@@ -17,6 +19,6 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const HomeScreen());
+        home: const MainNavigationScreen());
   }
 }

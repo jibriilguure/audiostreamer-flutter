@@ -25,4 +25,14 @@ class AuthController extends StateNotifier<AsyncValue<AuthResponse>> {
       state = AsyncValue.error(e, st);
     }
   }
+
+  Future<void> register(String email, String password) async {
+    state = const AsyncValue.loading();
+    try {
+      final response = await _authRepository.register(email, password);
+      state = AsyncValue.data(response);
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+    }
+  }
 }

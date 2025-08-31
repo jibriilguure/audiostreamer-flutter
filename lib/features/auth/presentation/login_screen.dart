@@ -3,7 +3,7 @@ import 'package:audio_streamer/features/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/const.dart';
-import '../../audio/presentation/screens/audio_list_screen.dart';
+
 import '../application/auth_controller.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -31,6 +31,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     await ref.read(authControllerProvider.notifier).login(email, password);
   }
 
+  bool _obscureText = true;
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authControllerProvider);
@@ -91,6 +92,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               // Email field
               TextFormField(
                 controller: emailController,
+                style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   labelText: 'Email or username',
                   labelStyle: const TextStyle(color: AppColors.hint),
@@ -105,8 +107,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
               // Password field
               TextFormField(
+                style: TextStyle(color: Colors.white),
                 controller: passwordController,
-                obscureText: false,
+                obscureText: _obscureText,
                 decoration: InputDecoration(
                   labelText: 'Password',
                   labelStyle: const TextStyle(color: AppColors.hint),
@@ -115,8 +118,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         const BorderSide(color: AppColors.textFieldBorder),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  suffixIcon:
-                      const Icon(Icons.visibility_off, color: AppColors.hint),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureText ? Icons.visibility_off : Icons.visibility,
+                      color: Colors.white70,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
+                  ),
                 ),
               ),
               const SizedBox(height: 20),

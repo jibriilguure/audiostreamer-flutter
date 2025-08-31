@@ -1,4 +1,4 @@
-import 'package:audio_streamer/features/audio/presentation/screens/audio_list_screen.dart';
+import 'package:audio_streamer/features/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import '../../../core/const.dart';
 
@@ -13,7 +13,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int currentIndex = 0;
 
   final List<Widget> pages = [
-    const AudioListSection(),
+    const HomeScreen(),
     const Center(child: Text('Samples', style: TextStyle(color: Colors.white))),
     const Center(child: Text('Explore', style: TextStyle(color: Colors.white))),
     const Center(child: Text('Library', style: TextStyle(color: Colors.white))),
